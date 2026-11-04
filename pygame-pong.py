@@ -91,10 +91,12 @@ class ball:
 
         if self.rect.left < 0:
             score[1] += 1
+            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
             self.reset()
             return
         if self.rect.right > width:
             score[0] += 1
+            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
             self.reset()
             return
 
@@ -151,6 +153,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == pygame.USEREVENT+1:  # Used for timing - anything you put here will happen every four seconds.
+            sharik.move()
     # clock.tick(500)
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_q]:
