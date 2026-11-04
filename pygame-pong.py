@@ -4,11 +4,11 @@ size = width, height = 1280, 1024
 black = 0, 0, 0
 white = 255, 255, 255
 font = pygame.font.Font(None,35)
-died_image = font.render("You died!",1,(black))   # create an image which we can put on the "screen"
-died_rect = died_image.get_rect()                       # create a rect object for putting the message on the screen.
-died_rect.x = 200                                       # put the message somewhere sensible
-died_rect.y = 200
 score = [0, 0]
+score_image = font.render(f"{score[0]}, {score[1]}",1,(white))   # create an image which we can put on the "screen"
+score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
+score_rect.x = 512                                       # put the message somewhere sensible
+score_rect.y = 900
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
@@ -172,5 +172,6 @@ while True:
     secondplayer.display()
     sharik.display()
     sharik.move()
-    print(score)
+    # print(score)
+    screen.blit(score_image, score_rect)
     pygame.display.flip()
