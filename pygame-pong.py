@@ -6,10 +6,6 @@ black = 0, 0, 0
 white = 255, 255, 255
 font = pygame.font.Font(None,35)
 score = [0, 0]
-score_image = font.render(f"{score[0]}, {score[1]}",1,(white))   # create an image which we can put on the "screen"
-score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
-score_rect.x = 590                                       # put the message somewhere sensible
-score_rect.y = 124
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
@@ -173,6 +169,9 @@ while True:
     secondplayer.display()
     sharik.display()
     sharik.move()
-    # print(score)
+    score_image = font.render(f"{score[0]} | {score[1]}",1,(white))   # create an image which we can put on the "screen"
+    score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
+    score_rect.x = 590                                       # put the message somewhere sensible
+    score_rect.y = 124
     screen.blit(score_image, score_rect)
     pygame.display.flip()
