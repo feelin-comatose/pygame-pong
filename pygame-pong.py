@@ -8,7 +8,7 @@ font = pygame.font.Font(None,35)
 score = [0, 0]
 score_image = font.render(f"{score[0]}, {score[1]}",1,(white))   # create an image which we can put on the "screen"
 score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
-score_rect.x = 512                                       # put the message somewhere sensible
+score_rect.x = 590                                       # put the message somewhere sensible
 score_rect.y = 124
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
@@ -65,10 +65,10 @@ class Player2:
             self.rect.bottom = height
 
 class ball:
-    BASE_SPEED = 1    # horizontal speed at the start of each point
-    MAX_SPEED = 1.75     # horizontal speed never goes above this
+    BASE_SPEED = 1      # horizontal speed at the start of each point
+    MAX_SPEED = 1.5     # horizontal speed never goes above this
     SPEEDUP = 1.05      # speed multiplier per paddle hit
-    MAX_VY = 1.5        # max vertical speed from the hit position
+    MAX_VY = 1.2        # max vertical speed from the hit position
     RANDOMNESS = 0.3    # random extra vertical speed on each bounce
 
     def __init__(self):
