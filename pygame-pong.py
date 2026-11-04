@@ -1,5 +1,6 @@
-import sys, pygame, random, time  # Import the libraries
+import sys, pygame, random, time, os  # Import the libraries
 pygame.init()
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 size = width, height = 1280, 1024
 black = 0, 0, 0
 white = 255, 255, 255
@@ -8,7 +9,7 @@ score = [0, 0]
 score_image = font.render(f"{score[0]}, {score[1]}",1,(white))   # create an image which we can put on the "screen"
 score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
 score_rect.x = 512                                       # put the message somewhere sensible
-score_rect.y = 900
+score_rect.y = 124
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
@@ -16,7 +17,7 @@ clock = pygame.time.Clock()
 
 class Player1:
     def __init__(self):
-        self.image = pygame.image.load("images(4) (1).png")
+        self.image = pygame.image.load("paddle.png")
         self.rect = self.image.get_rect()
         self.rect.x = 50
         self.rect.y = 462
@@ -41,7 +42,7 @@ class Player1:
 
 class Player2:
     def __init__(self):
-        self.image = pygame.image.load("images(4) (1).png")
+        self.image = pygame.image.load("paddle.png")
         self.rect = self.image.get_rect()
         self.rect.x = width - 80
         self.rect.y = 462
@@ -71,7 +72,7 @@ class ball:
     RANDOMNESS = 0.3    # random extra vertical speed on each bounce
 
     def __init__(self):
-        self.image = pygame.image.load("shopping (1).png")
+        self.image = pygame.image.load("ball.png")
         self.rect = self.image.get_rect()
         self.reset()
 
