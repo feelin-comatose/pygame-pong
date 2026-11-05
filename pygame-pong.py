@@ -157,10 +157,10 @@ class ball:
 firstplayer = Player1()
 secondplayer = Player2()
 sharik = ball()
-pause = False
+paused = True
 pygame.key.set_repeat(1000,500) 
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
-while True:
+while paused:
     for event in pygame.event.get():               # Check if any system events have happened
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -172,9 +172,10 @@ while True:
                 sharik.paused = False
     # clock.tick(0.1)
     keystate = pygame.key.get_pressed()
-    if keystate[pygame.K_q]:
-        pygame.quit()
-        sys.exit()
+    if keystate[pygame.K_SPACE]:
+        # pygame.quit()
+        # sys.exit()
+        paused = False
     if keystate[pygame.K_w]:
         firstplayer.move("up")
     if keystate[pygame.K_s]:
@@ -199,3 +200,15 @@ while True:
     score_rect.y = 124
     screen.blit(score_image, score_rect)
     pygame.display.flip()
+
+while not paused:
+    for event in pygame.event.get():               # Check if any system events have happened
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and paused == False:
+                paused = True
+            if event.key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
+    screen.fill(white)
+    pygame.display.flip()
+    print("paused")
