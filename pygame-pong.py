@@ -11,12 +11,13 @@ clock = pygame.time.Clock()
 
 
 
-class Player1: # добавить края ракеткам, для хитбоксов + закруглить угла
+class Player1:
     def __init__(self):
         self.image = pygame.image.load("paddle.png")
         self.rect = self.image.get_rect()
         self.rect.x = 50
         self.rect.y = 462
+        self.outline = self.rect
 
     def display(self):
         screen.blit(self.image, self.rect)
@@ -36,12 +37,13 @@ class Player1: # добавить края ракеткам, для хитбок
             self.rect.bottom = height
 
 
-class Player2: # добавить края ракеткам, для хитбоксов + закруглить угла
+class Player2:
     def __init__(self):
         self.image = pygame.image.load("paddle.png")
         self.rect = self.image.get_rect()
         self.rect.x = width - 80
         self.rect.y = 462
+        self.outline = self.rect
 
     def display(self):
         screen.blit(self.image, self.rect)
@@ -70,6 +72,7 @@ class ball:
     def __init__(self):
         self.image = pygame.image.load("ball.png")
         self.rect = self.image.get_rect()
+        self.outline = self.rect
         self.alive = False
         self.reset()
 
@@ -178,6 +181,9 @@ while True:
     # while sharik.alive == True:
     #     sharik.move()
     sharik.move()
+    pygame.draw.rect(screen, white, firstplayer.outline, 2, 5)
+    pygame.draw.rect(screen, white, secondplayer.outline, 2, 5)
+    pygame.draw.rect(screen, white, sharik.outline, 2, 5)
     score_image = font.render(f"{score[0]} | {score[1]}",1,(white))   # create an image which we can put on the "screen"
     score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
     score_rect.x = 590                                       # put the message somewhere sensible
