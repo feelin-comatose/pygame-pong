@@ -73,16 +73,17 @@ class ball:
         self.image = pygame.image.load("ball.png")
         self.rect = self.image.get_rect()
         self.outline = self.rect
-        self.paused = False
-        self.reset()
+        self.paused = True
+        left = True
+        self.reset(left)
 
-    def reset(self):
+    def reset(self, side):
         self.rect.x = 590
         self.rect.y = 462
         self.pos = [float(self.rect.x), float(self.rect.y)]   # float position
         self.speed = self.BASE_SPEED
-        self.direction = [random.choice((-1, 1)) * self.speed,
-                          random.uniform(-1, 1)]
+        if side: self.direction = [1 * self.speed, random.uniform(-1, 1)]
+        else: self.direction = [-1 * self.speed, random.uniform(-1, 1)]
 
     def display(self):
         screen.blit(self.image, self.rect)
@@ -98,13 +99,15 @@ class ball:
                 score[1] += 1
                 # pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта / ИСПОЛЬЗОВАТЬ ФУНКЦИЮ ПАУЗЫ !!!
                 self.paused = True
-                self.reset()
+                left = True
+                self.reset(left)
                 return
             if self.rect.right > width:
                 score[0] += 1
                 # pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
                 self.paused = True
-                self.reset()
+                left = False
+                self.reset(left)
                 return
 
             for paddle in (firstplayer.rect, secondplayer.rect):
