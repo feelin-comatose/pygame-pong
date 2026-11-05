@@ -163,9 +163,9 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:
+            if event.key == pygame.K_p and sharik.paused != True:
                 sharik.paused = True
-            if event.key == pygame.K_p and sharik.paused == True:
+            elif event.key == pygame.K_p and sharik.paused == True:
                 sharik.paused = False
     # clock.tick(0.1)
     keystate = pygame.key.get_pressed()
