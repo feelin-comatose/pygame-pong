@@ -166,9 +166,7 @@ while paused:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p and sharik.paused != True:
-                sharik.paused = True
-            elif event.key == pygame.K_p and sharik.paused == True:
+            if event.key == pygame.K_p and sharik.paused == True:
                 sharik.paused = False
     # clock.tick(0.1)
     keystate = pygame.key.get_pressed()
@@ -194,11 +192,11 @@ while paused:
     pygame.draw.rect(screen, white, firstplayer.outline, 2, 20)
     pygame.draw.rect(screen, white, secondplayer.outline, 2, 20)
     pygame.draw.rect(screen, red, sharik.outline, 2, 20)
-    score_image = font.render(f"{score[0]} | {score[1]}",1,(white))   # create an image which we can put on the "screen"
-    score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
+    score_text = font.render(f"{score[0]} | {score[1]}",1,(white))   # create an image which we can put on the "screen"
+    score_rect = score_text.get_rect()                       # create a rect object for putting the message on the screen.
     score_rect.x = 590                                       # put the message somewhere sensible
     score_rect.y = 124
-    screen.blit(score_image, score_rect)
+    screen.blit(score_text, score_rect)
     pygame.display.flip()
 
 while not paused:
@@ -210,5 +208,14 @@ while not paused:
                 pygame.quit()
                 sys.exit()
     screen.fill(white)
+    score_text = font.render(f"{score[0]} | {score[1]}",1,(black))   # create an image which we can put on the "screen"
+    score_rect = score_text.get_rect()                       # create a rect object for putting the message on the screen.
+    score_rect.x = 590                                       # put the message somewhere sensible
+    score_rect.y = 124
+    pause_text = font.render(f"GAME IS PAUSED",1,(black))
+    pause_rect = pause_text.get_rect()                       # create a rect object for putting the message on the screen.
+    pause_rect.x = 500                                       # put the message somewhere sensible
+    pause_rect.y = 124
+    screen.blit(pause_text, pause_rect)
     pygame.display.flip()
     print("paused")
