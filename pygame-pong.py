@@ -9,7 +9,6 @@ font = pygame.font.Font(None,35)
 score = [0, 0]
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-pause = False
 
 
 class Player1:
@@ -74,7 +73,7 @@ class ball:
         self.image = pygame.image.load("ball.png")
         self.rect = self.image.get_rect()
         self.outline = self.rect
-        self.alive = False
+        self.paused = False
         self.reset()
 
     def reset(self):
@@ -89,67 +88,68 @@ class ball:
         screen.blit(self.image, self.rect)
 
     def move(self):
-        self.pos[0] += self.direction[0]
-        self.pos[1] += self.direction[1]
-        self.rect.x = round(self.pos[0])
-        self.rect.y = round(self.pos[1])
+        if not self.paused:
+            self.pos[0] += self.direction[0]
+            self.pos[1] += self.direction[1]
+            self.rect.x = round(self.pos[0])
+            self.rect.y = round(self.pos[1])
 
-        if self.rect.left < 0:
-            score[1] += 1
-            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта / ИСПОЛЬЗОВАТЬ ФУНКЦИЮ ПАУЗЫ !!!
-            self.alive = False
-            self.reset()
-            return
-        if self.rect.right > width:
-            score[0] += 1
-            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
-            self.alive = False
-            self.reset()
-            return
+            if self.rect.left < 0:
+                score[1] += 1
+                pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта / ИСПОЛЬЗОВАТЬ ФУНКЦИЮ ПАУЗЫ !!!
+                self.alive = False
+                self.reset()
+                return
+            if self.rect.right > width:
+                score[0] += 1
+                pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
+                self.alive = False
+                self.reset()
+                return
 
-        for paddle in (firstplayer.rect, secondplayer.rect):
-            if self.rect.colliderect(paddle):
-                from_left   = self.rect.right - paddle.left
-                from_right  = paddle.right - self.rect.left
-                from_top    = self.rect.bottom - paddle.top
-                from_bottom = paddle.bottom - self.rect.top
+            for paddle in (firstplayer.rect, secondplayer.rect):
+                if self.rect.colliderect(paddle):
+                    from_left   = self.rect.right - paddle.left
+                    from_right  = paddle.right - self.rect.left
+                    from_top    = self.rect.bottom - paddle.top
+                    from_bottom = paddle.bottom - self.rect.top
 
-                if min(from_left, from_right) < min(from_top, from_bottom):
-                    # hit the front/back face: bounce back with a new angle
-                    self.speed = min(self.speed * self.SPEEDUP, self.MAX_SPEED)
+                    if min(from_left, from_right) < min(from_top, from_bottom):
+                        # hit the front/back face: bounce back with a new angle
+                        self.speed = min(self.speed * self.SPEEDUP, self.MAX_SPEED)
 
-                    # -1 = top of paddle, 0 = middle, +1 = bottom
-                    offset = (self.rect.centery - paddle.centery) / (paddle.height / 2)
-                    offset = max(-1, min(1, offset))
-                    new_vy = offset * self.MAX_VY + random.uniform(-self.RANDOMNESS, self.RANDOMNESS)
+                        # -1 = top of paddle, 0 = middle, +1 = bottom
+                        offset = (self.rect.centery - paddle.centery) / (paddle.height / 2)
+                        offset = max(-1, min(1, offset))
+                        new_vy = offset * self.MAX_VY + random.uniform(-self.RANDOMNESS, self.RANDOMNESS)
 
-                    if from_left < from_right:
-                        self.rect.right = paddle.left
-                        self.direction[0] = -self.speed
+                        if from_left < from_right:
+                            self.rect.right = paddle.left
+                            self.direction[0] = -self.speed
+                        else:
+                            self.rect.left = paddle.right
+                            self.direction[0] = self.speed
+                        self.direction[1] = new_vy
                     else:
-                        self.rect.left = paddle.right
-                        self.direction[0] = self.speed
-                    self.direction[1] = new_vy
-                else:
-                    # hit the top/bottom edge of the paddle
-                    if from_top < from_bottom:
-                        self.rect.bottom = paddle.top
-                        self.direction[1] = -abs(self.direction[1])
-                    else:
-                        self.rect.top = paddle.bottom
-                        self.direction[1] = abs(self.direction[1])
+                        # hit the top/bottom edge of the paddle
+                        if from_top < from_bottom:
+                            self.rect.bottom = paddle.top
+                            self.direction[1] = -abs(self.direction[1])
+                        else:
+                            self.rect.top = paddle.bottom
+                            self.direction[1] = abs(self.direction[1])
 
-                # keep the float position in sync after pushing the ball out
-                self.pos = [float(self.rect.x), float(self.rect.y)]
+                    # keep the float position in sync after pushing the ball out
+                    self.pos = [float(self.rect.x), float(self.rect.y)]
 
-        if self.rect.top < 0:
-            self.rect.top = 0
-            self.direction[1] = abs(self.direction[1])
-            self.pos[1] = float(self.rect.y)
-        if self.rect.bottom > height:
-            self.rect.bottom = height
-            self.direction[1] = -abs(self.direction[1])
-            self.pos[1] = float(self.rect.y)
+            if self.rect.top < 0:
+                self.rect.top = 0
+                self.direction[1] = abs(self.direction[1])
+                self.pos[1] = float(self.rect.y)
+            if self.rect.bottom > height:
+                self.rect.bottom = height
+                self.direction[1] = -abs(self.direction[1])
+                self.pos[1] = float(self.rect.y)
 
 def paused():
     pass
@@ -157,15 +157,28 @@ def paused():
 firstplayer = Player1()
 secondplayer = Player2()
 sharik = ball()
+pause = False
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
 while True:
     for event in pygame.event.get():                # Check if any system events have happened
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        # elif event.type == pygame.USEREVENT+1:  # Used for timing - anything you put here will happen every four seconds.
-        #     sharik.alive = True
-    # clock.tick(500)
+        # elif event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_p:
+        #         pause = True
+        #         print("paused")
+        #         paused()
+        #         if event.key == pygame.K_p and pause==True:
+        #             pause = False
+        #             print("unpaused")
+            # elif event.key == pygame.K_p and pause == True:
+            #     pause = False
+            #     print("unpaused")
+        elif event.type == pygame.USEREVENT+1:  # Used for timing - anything you put here will happen every four seconds.
+            sharik.paused = False
+        else: sharik.paused = True
+    # clock.tick(0.1)
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_q]:
         pygame.quit()
@@ -173,10 +186,14 @@ while True:
     if keystate[pygame.K_w]:
         firstplayer.move("up")
     if keystate[pygame.K_p]:
+        pygame.key.set_repeat()
         pause = True
+        print("paused")
         paused()
     if keystate[pygame.K_p] and pause == True:
+        pygame.key.set_repeat()
         pause = False
+        print("unpaused")
     if keystate[pygame.K_s]:
         firstplayer.move("down")
     if keystate[pygame.K_UP]:
