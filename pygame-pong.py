@@ -96,14 +96,14 @@ class ball:
 
             if self.rect.left < 0:
                 score[1] += 1
-                pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта / ИСПОЛЬЗОВАТЬ ФУНКЦИЮ ПАУЗЫ !!!
-                self.alive = False
+                # pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта / ИСПОЛЬЗОВАТЬ ФУНКЦИЮ ПАУЗЫ !!!
+                self.paused = True
                 self.reset()
                 return
             if self.rect.right > width:
                 score[0] += 1
-                pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
-                self.alive = False
+                # pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
+                self.paused = True
                 self.reset()
                 return
 
@@ -151,33 +151,22 @@ class ball:
                 self.direction[1] = -abs(self.direction[1])
                 self.pos[1] = float(self.rect.y)
 
-def paused():
-    pass
-
 firstplayer = Player1()
 secondplayer = Player2()
 sharik = ball()
 pause = False
+pygame.key.set_repeat(1000,500) 
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
 while True:
-    for event in pygame.event.get():                # Check if any system events have happened
+    for event in pygame.event.get():               # Check if any system events have happened
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        # elif event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_p:
-        #         pause = True
-        #         print("paused")
-        #         paused()
-        #         if event.key == pygame.K_p and pause==True:
-        #             pause = False
-        #             print("unpaused")
-            # elif event.key == pygame.K_p and pause == True:
-            #     pause = False
-            #     print("unpaused")
-        elif event.type == pygame.USEREVENT+1:  # Used for timing - anything you put here will happen every four seconds.
-            sharik.paused = False
-        else: sharik.paused = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                sharik.paused = True
+            if event.key == pygame.K_p and sharik.paused == True:
+                sharik.paused = False
     # clock.tick(0.1)
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_q]:
@@ -185,15 +174,6 @@ while True:
         sys.exit()
     if keystate[pygame.K_w]:
         firstplayer.move("up")
-    if keystate[pygame.K_p]:
-        pygame.key.set_repeat()
-        pause = True
-        print("paused")
-        paused()
-    if keystate[pygame.K_p] and pause == True:
-        pygame.key.set_repeat()
-        pause = False
-        print("unpaused")
     if keystate[pygame.K_s]:
         firstplayer.move("down")
     if keystate[pygame.K_UP]:
