@@ -4,11 +4,12 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 size = width, height = 1280, 1024
 black = 0, 0, 0
 white = 255, 255, 255
+red = 255, 0, 0
 font = pygame.font.Font(None,35)
 score = [0, 0]
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-
+pause = False
 
 
 class Player1:
@@ -95,7 +96,7 @@ class ball:
 
         if self.rect.left < 0:
             score[1] += 1
-            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта
+            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта / ИСПОЛЬЗОВАТЬ ФУНКЦИЮ ПАУЗЫ !!!
             self.alive = False
             self.reset()
             return
@@ -134,11 +135,9 @@ class ball:
                     if from_top < from_bottom:
                         self.rect.bottom = paddle.top
                         self.direction[1] = -abs(self.direction[1])
-                        self.direction[0] = -self.direction[0]
                     else:
                         self.rect.top = paddle.bottom
                         self.direction[1] = abs(self.direction[1])
-                        self.direction[0] = self.direction[0]
 
                 # keep the float position in sync after pushing the ball out
                 self.pos = [float(self.rect.x), float(self.rect.y)]
@@ -151,6 +150,9 @@ class ball:
             self.rect.bottom = height
             self.direction[1] = -abs(self.direction[1])
             self.pos[1] = float(self.rect.y)
+
+def paused():
+    pass
 
 firstplayer = Player1()
 secondplayer = Player2()
@@ -170,6 +172,11 @@ while True:
         sys.exit()
     if keystate[pygame.K_w]:
         firstplayer.move("up")
+    if keystate[pygame.K_p]:
+        pause = True
+        paused()
+    if keystate[pygame.K_p] and pause == True:
+        pause = False
     if keystate[pygame.K_s]:
         firstplayer.move("down")
     if keystate[pygame.K_UP]:
@@ -183,9 +190,9 @@ while True:
     # while sharik.alive == True:
     #     sharik.move()
     sharik.move()
-    pygame.draw.rect(screen, white, firstplayer.outline, 2, 5)
-    pygame.draw.rect(screen, white, secondplayer.outline, 2, 5)
-    pygame.draw.rect(screen, white, sharik.outline, 2, 5)
+    pygame.draw.rect(screen, white, firstplayer.outline, 2, 20)
+    pygame.draw.rect(screen, white, secondplayer.outline, 2, 20)
+    pygame.draw.rect(screen, red, sharik.outline, 2, 20)
     score_image = font.render(f"{score[0]} | {score[1]}",1,(white))   # create an image which we can put on the "screen"
     score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
     score_rect.x = 590                                       # put the message somewhere sensible
