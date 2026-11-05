@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 
 
 
-class Player1:
+class Player1: # добавить края ракеткам, для хитбоксов + закруглить угла
     def __init__(self):
         self.image = pygame.image.load("paddle.png")
         self.rect = self.image.get_rect()
@@ -36,7 +36,7 @@ class Player1:
             self.rect.bottom = height
 
 
-class Player2:
+class Player2: # добавить края ракеткам, для хитбоксов + закруглить угла
     def __init__(self):
         self.image = pygame.image.load("paddle.png")
         self.rect = self.image.get_rect()
@@ -92,7 +92,7 @@ class ball:
 
         if self.rect.left < 0:
             score[1] += 1
-            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
+            pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1) # сделать кд после поинта
             self.alive = False
             self.reset()
             return
@@ -156,8 +156,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        elif event.type == pygame.USEREVENT+1:  # Used for timing - anything you put here will happen every four seconds.
-            sharik.alive = True
+        # elif event.type == pygame.USEREVENT+1:  # Used for timing - anything you put here will happen every four seconds.
+        #     sharik.alive = True
     # clock.tick(500)
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_q]:
@@ -175,8 +175,9 @@ while True:
     firstplayer.display()
     secondplayer.display()
     sharik.display()
-    while sharik.alive == True:
-        sharik.move()
+    # while sharik.alive == True:
+    #     sharik.move()
+    sharik.move()
     score_image = font.render(f"{score[0]} | {score[1]}",1,(white))   # create an image which we can put on the "screen"
     score_rect = score_image.get_rect()                       # create a rect object for putting the message on the screen.
     score_rect.x = 590                                       # put the message somewhere sensible
