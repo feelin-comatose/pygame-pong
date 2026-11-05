@@ -134,9 +134,11 @@ class ball:
                     if from_top < from_bottom:
                         self.rect.bottom = paddle.top
                         self.direction[1] = -abs(self.direction[1])
+                        self.direction[0] = -self.direction[0]
                     else:
                         self.rect.top = paddle.bottom
                         self.direction[1] = abs(self.direction[1])
+                        self.direction[0] = self.direction[0]
 
                 # keep the float position in sync after pushing the ball out
                 self.pos = [float(self.rect.x), float(self.rect.y)]
