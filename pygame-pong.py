@@ -8,6 +8,9 @@ red = 255, 0, 0
 font = pygame.font.Font(None,35)
 score = [0, 0]
 screen = pygame.display.set_mode(size)
+pygame.display.set_caption("explosive pong")
+icon = pygame.image.load('icon.png')
+pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 
 
@@ -154,13 +157,30 @@ class ball:
                 self.direction[1] = -abs(self.direction[1])
                 self.pos[1] = float(self.rect.y)
 
+class Game:
+    def __init__(self):
+        pass
+    def display(self, paused):
+        if paused:
+            pause_text = font.render(f"GAME IS PAUSED",1,(black))
+            pause_rect = pause_text.get_rect()                       # create a rect object for putting the message on the screen.
+            pause_rect.x = 500                                       # put the message somewhere sensible
+            pause_rect.y = 124
+            screen.blit(pause_text, pause_rect)
+        else:
+            screen.fill(black)
+            firstplayer.display()
+            secondplayer.display()
+            sharik.display()
+
 firstplayer = Player1()
 secondplayer = Player2()
 sharik = ball()
-paused = True
+game = Game()
+paused = False
 pygame.key.set_repeat(1000,500) 
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
-while paused:
+while True:
     for event in pygame.event.get():               # Check if any system events have happened
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -168,11 +188,18 @@ while paused:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p and sharik.paused == True:
                 sharik.paused = False
+            if event.key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
+            # if event.key == pygame.K_SPACE and paused == False:
+            #     paused = True
+            # if event.key == pygame.K_SPACE and paused:
+            #     paused = False
     # clock.tick(0.1)
     keystate = pygame.key.get_pressed()
-    if keystate[pygame.K_SPACE]:
-        # pygame.quit()
-        # sys.exit()
+    if keystate[pygame.K_SPACE] and paused == False:
+        paused = True
+    if keystate[pygame.K_SPACE] and paused:
         paused = False
     if keystate[pygame.K_w]:
         firstplayer.move("up")
@@ -182,10 +209,11 @@ while paused:
         secondplayer.move("up")
     if keystate[pygame.K_DOWN]:
         secondplayer.move("down")
-    screen.fill(black)
-    firstplayer.display()
-    secondplayer.display()
-    sharik.display()
+    # screen.fill(black)
+    # firstplayer.display()
+    # secondplayer.display()
+    # sharik.display()
+    game.display(paused)
     # while sharik.alive == True:
     #     sharik.move()
     sharik.move()
@@ -199,11 +227,11 @@ while paused:
     screen.blit(score_text, score_rect)
     pygame.display.flip()
 
-while not paused:
+while paused:
     for event in pygame.event.get():               # Check if any system events have happened
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and paused == False:
-                paused = True
+            if event.key == pygame.K_SPACE and paused == True:
+                paused = False
             if event.key == pygame.K_q:
                 pygame.quit()
                 sys.exit()
