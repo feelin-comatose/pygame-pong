@@ -164,7 +164,7 @@ paused = False
 # pygame.key.set_repeat(1000,500) 
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
 while True:
-    if paused == False:
+    if not paused:
         for event in pygame.event.get():               # Check if any system events have happened
             if event.type == pygame.QUIT:
                 pygame.quit()
