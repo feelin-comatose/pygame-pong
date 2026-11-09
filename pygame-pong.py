@@ -209,10 +209,12 @@ while True:
         pygame.display.flip()
 
     elif paused:
+        sharik.paused = True
         for event in pygame.event.get():               # Check if any system events have happened
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and paused == True:
                     paused = False
+                    sharik.paused = False
                 if event.key == pygame.K_q:
                     pygame.quit()
                     sys.exit()
