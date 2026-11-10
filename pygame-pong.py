@@ -218,16 +218,22 @@ while True:
                     pygame.quit()
                     sys.exit()
         screen.fill(white)
-        score_text = font.render(f"{score[0]} | {score[1]}",1,(black))   # create an image which we can put on the "screen"
-        score_rect = score_text.get_rect()                       # create a rect object for putting the message on the screen.
-        score_rect.x = 590                                       # put the message somewhere sensible
-        score_rect.y = 124
         pause_text = font.render(f"GAME IS PAUSED",1,(black))
         pause_rect = pause_text.get_rect()                       # create a rect object for putting the message on the screen.
         pause_rect.x = 500                                       # put the message somewhere sensible
         pause_rect.y = 124
         screen.blit(pause_text, pause_rect)
         pygame.display.flip()
-    if score[0] == 5 or score[1] == 5:
-        pygame.quit()
-        sys.exit()
+    while score[0] == 5 or score[1] == 5:
+        for event in pygame.event.get():               # Check if any system events have happened
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()
+        screen.fill(white)
+        pause_text = font.render(f"game is finished",1,(black))
+        pause_rect = pause_text.get_rect()                       # create a rect object for putting the message on the screen.
+        pause_rect.x = 500                                       # put the message somewhere sensible
+        pause_rect.y = 124
+        screen.blit(pause_text, pause_rect)
+        pygame.display.flip()
