@@ -165,11 +165,11 @@ paused = False
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
 while True:
     if not paused:
-        for event in pygame.event.get():               # Check if any system events have happened
+        for event in pygame.event.get(): 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p and sharik.paused == True:
                     sharik.paused = False
                 if event.key == pygame.K_q:
@@ -207,7 +207,6 @@ while True:
         score_rect.y = 124
         screen.blit(score_text, score_rect)
         pygame.display.flip()
-
     elif paused:
         sharik.paused = True
         for event in pygame.event.get():               # Check if any system events have happened
@@ -229,3 +228,6 @@ while True:
         pause_rect.y = 124
         screen.blit(pause_text, pause_rect)
         pygame.display.flip()
+    if score[0] == 5 or score[1] == 5:
+        pygame.quit()
+        sys.exit()
