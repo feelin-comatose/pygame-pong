@@ -161,7 +161,6 @@ firstplayer = Player1()
 secondplayer = Player2()
 sharik = ball()
 paused = False
-# pygame.key.set_repeat(1000,500) 
 pygame.time.set_timer(pygame.USEREVENT+1, 3000, loops=1)
 while True:
     if not paused:
@@ -177,14 +176,7 @@ while True:
                     sys.exit()
                 if event.key == pygame.K_SPACE:
                     paused = not paused
-        # clock.tick(0.1)
         keystate = pygame.key.get_pressed()
-        # if keystate[pygame.K_SPACE] and paused == False:
-        #     paused = True
-        #     print(paused)
-        # if keystate[pygame.K_SPACE] and paused:
-        #     paused = False
-        #     print(paused)
         if keystate[pygame.K_w]:
             firstplayer.move("up")
         if keystate[pygame.K_s]:
