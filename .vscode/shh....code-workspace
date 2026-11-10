@@ -1,11 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "../../pysweeper"
+			"path": ".."
 		},
 		{
-			"path": ".."
+			"path": "../../../../Desktop/pysweeper"
+		},
+		{
+			"path": "../../pysweeper"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python-envs.defaultEnvManager": "ms-python.python:system"
+	}
 }

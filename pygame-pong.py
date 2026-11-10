@@ -12,6 +12,7 @@ pygame.display.set_caption("explosive pong")
 icon = pygame.image.load('icon.png')
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
+clock.tick(60)
 
 
 class Player1:
